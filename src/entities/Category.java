@@ -1,16 +1,18 @@
 package entities;
 
+import core.entities.Entity;
 
-public class Category {
+public class Category extends Entity {
 
 	private String name;
 
 	public Category() {
-		super();
+		
 	}
 
-	public Category(String name) {
-		super();
+	public Category(int id,String name) {
+		
+		this.id = id;
 		this.name = name;
 	}
 

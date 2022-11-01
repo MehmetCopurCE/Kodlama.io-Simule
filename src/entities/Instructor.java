@@ -1,8 +1,9 @@
 package entities;
 
+import core.entities.Entity;
 
-public class Instructor {
-
+public class Instructor extends Entity {
+	
 	private String firstName;
 	private String lastName;
 	private String mail;
@@ -11,8 +12,8 @@ public class Instructor {
 		super();
 	}
 
-	public Instructor(String firstName, String lastName, String mail) {
-		super();
+	public Instructor(int id,String firstName, String lastName, String mail) {
+		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.mail = mail;

@@ -1,10 +1,9 @@
 package dataAccess.abstracts;
 
+import core.dataAccess.abstracts.BaseEntityDao;
 import entities.Category;
 
-public interface CategoryDao{
+public interface CategoryDao extends BaseEntityDao<Category>{
 
-    void add(Category category);
-    void delete(Category category);
-    void update(Category category);
+   
 }

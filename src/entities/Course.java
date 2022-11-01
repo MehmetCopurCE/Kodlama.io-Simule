@@ -1,7 +1,8 @@
 package entities;
 
+import core.entities.Entity;
 
-public class Course {
+public class Course extends Entity{
 
 	private String name;
 	private double price;
@@ -9,11 +10,12 @@ public class Course {
 	private int instructorId;
 
 	public Course() {
-		super();
+		
 	}
 
-	public Course(String name, double price, int categoryId, int instructorId) {
-		super();
+	public Course(int id,String name, double price, int categoryId, int instructorId) {
+		
+		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.categoryId = categoryId;

@@ -1,11 +1,9 @@
 package dataAccess.abstracts;
 
+import core.dataAccess.abstracts.BaseEntityDao;
 import entities.Course;
 
-public interface CourseDao {
+public interface CourseDao extends BaseEntityDao<Course> {
 
-    void add(Course course);
-    void delete(Course course);
-    void update(Course course);
-	
+    
 }

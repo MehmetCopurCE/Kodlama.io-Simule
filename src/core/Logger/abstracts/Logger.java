@@ -1,4 +1,4 @@
-package core.Logger;
+package core.Logger.abstracts;
 
 public interface Logger {
 

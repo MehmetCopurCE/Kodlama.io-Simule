@@ -1,11 +1,9 @@
 package dataAccess.abstracts;
 
+import core.dataAccess.abstracts.BaseEntityDao;
 import entities.Instructor;
 
-public interface InstructorDao {
+public interface InstructorDao extends BaseEntityDao<Instructor> {
 
-    void add(Instructor instructor);
-    void delete(Instructor instructor);
-    void update(Instructor instructor);
-	
+    
 }
