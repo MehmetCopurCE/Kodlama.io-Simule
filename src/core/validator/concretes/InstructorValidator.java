@@ -1,7 +1,6 @@
 package core.validator.concretes;
 
 import core.exceptions.ValidatorException;
-import core.rules.concretes.constants.InstructorRulesMessages;
 import core.validator.abstracts.InstructorValid;
 import core.validator.concretes.constant.InstructorValidatorMessages;
 import entities.Instructor;

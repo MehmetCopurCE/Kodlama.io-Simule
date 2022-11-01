@@ -1,34 +1,52 @@
+import java.awt.color.ICC_ColorSpace;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
 import javax.xml.crypto.Data;
 
+import business.abstracts.CategoryService;
 import business.abstracts.CourseService;
+import business.abstracts.InstructorService;
+import business.concretes.CategoryManager;
 import business.concretes.CourseManager;
+import business.concretes.InstructorManager;
 import core.Logger.abstracts.Logger;
 import core.Logger.concretes.DatabaseLogger;
+import core.Logger.concretes.FileLogger;
 import core.Logger.concretes.MailLogger;
 import core.exceptions.ValidatorException;
 import core.rules.abstracts.CategoryRules;
 import core.rules.abstracts.CourseRules;
+import core.rules.abstracts.InstructorRules;
 import core.rules.concretes.CategoryRuleBusiness;
 import core.rules.concretes.CourseRuleBusiness;
+import core.rules.concretes.InstructorRuleBusiness;
 import core.validator.abstracts.CategoryValid;
 import core.validator.abstracts.CourseValid;
+import core.validator.abstracts.InstructorValid;
 import core.validator.concretes.CategoryValidator;
 import core.validator.concretes.CourseValidator;
+import core.validator.concretes.InstructorValidator;
 import dataAccess.abstracts.CategoryDao;
 import dataAccess.abstracts.CourseDao;
+import dataAccess.abstracts.InstructorDao;
 import dataAccess.concretes.hibernateDatabase.HibernateCategoryDao;
 import dataAccess.concretes.jdbcDatabase.JdbcCourseDao;
+import dataAccess.concretes.jdbcDatabase.JdbcInstructorDao;
 import entities.Category;
 import entities.Course;
+import entities.Instructor;
 
 public class Main {
 
 	public static void main(String[] args) {
 		course();
 		System.out.println("********************************************");
+		category();
+		System.out.println("********************************************");
+		instructor();
+		
 
 	}
 
@@ -68,10 +86,10 @@ public class Main {
 		CourseDao jdbcCourseDao = new JdbcCourseDao();
 		CourseRules courseRules = new CourseRuleBusiness(jdbcCourseDao);
 		CourseValid courseValid = new CourseValidator();
-		Logger[] loggers = new Logger[] {new DatabaseLogger(), new MailLogger()};
+		Logger[] loggers = new Logger[] {new DatabaseLogger(), new FileLogger()};
 		
 		CourseService courseService = new CourseManager(jdbcCourseDao, courseRules, courseValid, loggers);
-		System.out.println("********************************************");
+		System.out.println("----------------------------------------");
 		
 		
 		
@@ -81,8 +99,7 @@ public class Main {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		System.out.println("********************************************");
-
+		System.out.println("----------------------------------------");
 		
 		
 		try {
@@ -92,8 +109,7 @@ public class Main {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		System.out.println("********************************************");
-		
+		System.out.println("----------------------------------------");		
 		try {
 			courseService.add(course6); 	//JavaScript'i ekler
 			courseService.delete(course6);  ////JavaScript'i siler
@@ -102,8 +118,7 @@ public class Main {
 			courseService.add(course5);
 			courseService.add(course6);
 			courseService.add(course7);
-			System.out.println("____________");
-			
+			System.out.println("----------------------------------------");			
 			
 			Course course = courseService.getAllByName(course1.getName()); //ismi java olanı getirir.
 			System.out.println(course1.getName());
@@ -116,7 +131,7 @@ public class Main {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		System.out.println("********************************************");	
+		System.out.println("----------------------------------------");
 	}
 	
 	
@@ -130,15 +145,76 @@ public class Main {
 		category2.setId(2);
 		category2.setName("Yazılım");
 		
-		Category category3 = new Category(3,"Kodlama");
+		Category category3 = new Category(3,"Programming");
 		
 		
 		CategoryDao categoryDao = new HibernateCategoryDao();
 		CategoryRules categoryRules = new CategoryRuleBusiness(categoryDao);
 		CategoryValid categoryValid = new CategoryValidator();
+		Logger[] loggers = new Logger[] {new DatabaseLogger(), new FileLogger()};
 		
+		CategoryService categoryService = new CategoryManager(categoryDao, categoryRules, categoryValid, loggers);
+		
+		
+		try {
+			categoryService.add(category1); //Veritabanına ekler
+			categoryService.add(category2); //Veritabanına ekler
+			categoryService.add(category3); // Hata verir. Kategori zaten mevcut.
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		
+		try {
+			categoryService.update(category2); // Güncelleme yapmaz zaten Katogori kayıtlı
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		List<Category> categories = categoryService.getAll();
+		
+		for (Category cate : categories) {
+			System.out.println(cate.getName());
+		}
+	}
 	
 	
 	
+	public static void instructor() {
+		Instructor instructor1 = new Instructor();
+		instructor1.setId(1);
+		instructor1.setFirstName("Mehmet");
+		instructor1.setLastName("Çopur");
+		instructor1.setMail("mmmmm.@gmail.com");
+		
+		Instructor instructor2 = new Instructor(2,"Kenan", "Kaya", "instructor2.@gmail.com");
+		Instructor instructor3 = new Instructor(3,"Hamza", "Koç", "instructor2.@gmail.com");
+		Instructor instructor4 = new Instructor(4,"Yusuf", "Özcan", "instructor4.@gmail.com");
+		
+		
+		InstructorDao instructorDao = new JdbcInstructorDao();
+		InstructorRules instructorRules = new InstructorRuleBusiness(instructorDao);
+		InstructorValid instructorValid = new InstructorValidator();
+		Logger[] loggers = new Logger[] {new DatabaseLogger(), new FileLogger()};
+		InstructorService instructorService = new InstructorManager(instructorDao, instructorRules, instructorValid, loggers);
+		
+		
+		try {
+			instructorService.add(instructor1); //Mehmet'i ekler
+			instructorService.add(instructor2); // Kenan'ı ekler
+			instructorService.add(instructor3); // Hata verir mail zaten kayıtlı
+			instructorService.add(instructor4);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		List<Instructor> instructors = instructorService.getAll();
+		for (Instructor instructorr : instructors) {
+			System.out.println(instructorr.getFirstName());
+		}
+		
+	}
+
 	
 }
